@@ -1,0 +1,11 @@
+{
+  "Load":
+  {
+    "id": 1,
+  "voltage": 5,
+  "current": 4,
+  "workingHours": 6,
+   "powerFactor": 0.9,
+    "type": "AC"
+  }
+}
