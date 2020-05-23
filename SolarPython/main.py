@@ -1,28 +1,27 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
-#from flask_mysqldb import MySQL
-import json
+from flask_mysqldb import MySQL
+import json , os
 
 # initializations
 app = Flask(__name__)
-
-# Mysql Connection
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Adali1392'
-app.config['MYSQL_DB'] = 'invernadero001'
-#mysql = MySQL(app)
-
-
 def processJsonReader(pathProp = ""):
-    with open(pathProp, 'r') as f:
-        pathProp.dictLoad = json.load(f)
-    return pathProp.dictLoad
+    dir = os.path.dirname(__file__)
+    filename = os.path.join(dir, pathProp)
+    with open(filename, 'r') as f:
+        dictLoad = json.load(f)
+    return dictLoad
+dictProp = processJsonReader("properties.json")
+# Mysql Connection
+app.config['MYSQL_HOST'] = dictProp.get('MYSQL_HOST')
+app.config['MYSQL_USER'] = dictProp.get('MYSQL_USER')
+app.config['MYSQL_PASSWORD'] = dictProp.get('MYSQL_PASSWORD')
+app.config['MYSQL_DB'] = dictProp.get('MYSQL_DB')
+mysql = MySQL(app)
 # settings
 app.secret_key = "mysecretkey"
-dictProp = {}
-dictProp = processJsonReader("/Users/manueltobon/Desktop/EngineSolar1.0/EngineSolar1.0/SolarPython/properties.json")
-for x in dictProp:
-    print(dictProp.get("prop").get(x))
+
+
+
 
 if __name__=='__main__':
 
