@@ -1,4 +1,4 @@
-from Engineer.model import IElectroDevice
+from engineer.model import IElectroDevice
 
 
 class PhotoPanel(IElectroDevice):
