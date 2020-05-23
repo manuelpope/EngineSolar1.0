@@ -3,7 +3,7 @@
 # TODO
 # this class should be Static , it's collaborator, it can not be initialized !
 
-from Adapter.model.Load import Load
+from adapter.model.Load import Load
 from math import ceil
 
 
