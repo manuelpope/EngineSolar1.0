@@ -1,7 +1,7 @@
 from flask import render_template, flash
 
 from adapter.model.modelFlask import Load
-from main import app, db
+from app import app, db
 
 
 @app.route('/')

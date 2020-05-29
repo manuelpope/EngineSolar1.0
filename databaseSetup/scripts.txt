@@ -24,3 +24,11 @@ CREATE TABLE Data_Test_Solar.LOADS (
   PF FLOAT NULL,
   PRIMARY KEY (id),
   UNIQUE INDEX id_UNIQUE (id ASC) VISIBLE);
+
+
+-- python - cmd-
+python3
+from app import db
+db.create_all()
+exit()
+--tabla creada.

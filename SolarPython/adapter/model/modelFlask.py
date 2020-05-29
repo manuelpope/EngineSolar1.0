@@ -1,4 +1,4 @@
-from main import db
+from app import db
 
 
 # Creating model table for our CRUD database
