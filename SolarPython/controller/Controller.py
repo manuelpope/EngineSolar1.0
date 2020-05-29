@@ -1,7 +1,18 @@
-from flask import render_template, flash
+from flask import flash, request, redirect, url_for
 
 from adapter.model.modelFlask import Load
 from app import app, db
+
+
+def serialize(group):
+    rjson = {}
+    x = 0
+    for reg in group:
+        x += 1
+        rjson[x] = str(reg)
+        print(x, reg)
+    # print(rjson, len(group))
+    return rjson
 
 
 @app.route('/')
@@ -19,6 +30,29 @@ def index():
     db.session.commit()
     flash("Employee Inserted Successfully")
     all_data = Load.query.all()
-    for x in all_data:
-        print(x.vx)
-    return render_template("index.html", data=all_data)
+
+    r2json = serialize(all_data)
+    return (r2json)
+
+
+@app.route('/update/<id>', methods=['POST'])
+def update_contact(id):
+    if request.method == 'POST':
+        flash('Contact Updated Successfully')
+        return redirect(url_for('Index'))
+
+
+@app.route('/delete/<string:id>', methods=['POST', 'GET'])
+def delete_contact(id):
+    flash('Contact Removed Successfully')
+    return redirect(url_for('Index'))
+
+
+@app.route('/add_contact', methods=['POST'])
+def add_contact():
+    if request.method == 'POST':
+        fullname = request.form['fullname']
+        phone = request.form['phone']
+        email = request.form['email']
+        flash('Contact Added successfully')
+        return redirect(url_for('Index'))
