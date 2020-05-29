@@ -17,5 +17,7 @@ class Technichian(object):
         print(builder.buildLoad())
         print(builder.__str__())
 
-#if __name__ == '__main__':
-   # work()
+
+if __name__ == '__main__':
+    tech = Technichian()
+    tech.work()

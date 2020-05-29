@@ -1,11 +1,24 @@
-from main import app
-from flask import render_template
-from adapter.worker.Technichian import Technichian
+from flask import render_template, flash
+
+from adapter.model.modelFlask import Load
+from main import app, db
+
 
 @app.route('/')
 def index():
-    tech = Technichian()
-    tech.work()
-    print("Calcs Done")
-    return render_template('index.html')
-
+    load = Load()
+    load.current = 5
+    load.vx = 100000000
+    load.__voltage = 6
+    load.pf = 45
+    load.workingHours = 6.6
+    load.typeL = "DC"
+    load2 = Load(5.6, 5, 5)
+    db.session.add(load2)
+    db.session.add(load)
+    db.session.commit()
+    flash("Employee Inserted Successfully")
+    all_data = Load.query.all()
+    for x in all_data:
+        print(x.vx)
+    return render_template("index.html", data=all_data)
