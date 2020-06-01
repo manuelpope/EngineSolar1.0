@@ -18,22 +18,23 @@ def serialize(group):
 
 @app.route('/')
 def index():
-    load = Load()
-    load.current = 5
-    load.vx = 100000000
-    load.__voltage = 6
-    load.pf = 45
-    load.workingHours = 6.6
-    load.typeL = "DC"
-    load2 = Load(5.6, 5, 5)
-    db.session.add(load2)
-    db.session.add(load)
-    db.session.commit()
-    flash("Employee Inserted Successfully")
-    all_data = Load.query.all()
+#   load = Load()
+#    load.current = 5
+#    load.vx = 100000000
+ #   load.__voltage = 6
+  #  load.pf = 45
+   # load.workingHours = 6.6
+    #load.typeL = "DC"
+    #load2 = Load(5.6, 5, 5)
+    #db.session.add(load2)
+    #db.session.add(load)
+    #db.session.commit()
+    #flash("Employee Inserted Successfully")
+    #all_data = Load.query.all()
 
-    r2json = serialize(all_data)
-    return (flask.render_template('form.html'), r2json)
+    #r2json = serialize(all_data)
+    #return (flask.render_template('form.html'), r2json)
+    return (flask.render_template('form.html'))
 
 
 @app.route('/update/<id>', methods=['POST'])
@@ -57,3 +58,11 @@ def add_contact():
         email = request.form['email']
         flash('Contact Added successfully')
         return redirect(url_for('Index'))
+
+@app.route('/sign-up', methods=['POST'])
+def loadReceive():
+    dict= request.form
+    for k,v in dict.items():
+        print(k," : ",v)
+    flash('Load Added successfully')
+    return redirect(('/'))
