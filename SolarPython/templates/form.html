@@ -6,49 +6,56 @@
 </head>
 <body>
 <div class="container">
-  <div class="row">
-    <div class="col">
+    <div class="row">
+        <div class="col">
 
-      <h1>Load spreed sheet</h1>
-      <hr>
+            <h1>Load spreed sheet</h1>
+            <hr>
 
-      <form action="/sign-up" method="POST">
+            <form action="/sign-up" method="POST">
 
-        <div class="form-group">
-          <label>VOLTAGE</label>
-          <input type="number" class="form-control" id="VOLTAGE" name="voltage" placeholder="Select a username"step="0.1">
+                <div class="form-group">
+                    <label>VOLTAGE</label>
+                    <input type="number" class="form-control" id="VOLTAGE" name="voltage"
+                           placeholder="Select a username" step="0.1" required>
+                </div>
+                <div class="form-group">
+                    <label>CURRENT</label>
+                    <input type="number" class="form-control" id="CURRENT" name="current"
+                           placeholder="Select a username" step="0.1" min="0" required>
+                </div>
+                <div class="">
+                    <label>PF</label>
+                    <input type="number" class="form-control" id="PF" name="pf" placeholder="Select a username"
+                           step="0.01" min="0" max="1" required>
+                </div>
+
+                <div class="form-group">
+                    <label>WORKING HOURS</label>
+                    <input type="number" class="form-control" id="WORKINGHOURS" name="hours"
+                           placeholder="Enter your email" step="0.5" min="0" required>
+                </div>
+
+                <div class="form-group">
+
+                    <select name="TypeLoad" id="TYPE">
+
+                        <option>AC</option>
+
+                        <option>DC</option>
+
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">SUBMIT</button>
+
+            </form>
+
+            <form action="/loadList" method="POST">
+                <button type="submit" class="btn btn-primary">FINISH</button>
+
+            </form>
         </div>
-           <div class="form-group">
-          <label>CURRENT</label>
-          <input type="number" class="form-control" id="CURRENT" name="current" placeholder="Select a username"step="0.1" min="0">
-        </div>
-           <div class="">
-          <label>PF</label>
-          <input type="number" class="form-control" id="PF" name="pf" placeholder="Select a username"step="0.01"min="0">
-        </div>
-
-        <div class="form-group">
-          <label>WORKING HOURS</label>
-          <input type="number" class="form-control" id="WORKINGHOURS" name="hours" placeholder="Enter your email"step="0.5"min="0">
-        </div>
-
-<div class="form-group">
-
-    <select name="TypeLoad" id="TYPE" >
-
-      <option>AC</option>
-
-      <option>DC</option>
-
-    </select>
-         </div>
-        <button type="submit" class="btn btn-primary">SUBMIT</button>
-
-      </form>
-
     </div>
-  </div>
 </div>
-
 </body>
 </html>
