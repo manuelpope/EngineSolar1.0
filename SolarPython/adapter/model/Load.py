@@ -6,6 +6,7 @@ class Load(object):
         self.__pf = pf
         self.__type = typeL
 
+
     def __call__(self, *args, **kwargs):
         return self
 
