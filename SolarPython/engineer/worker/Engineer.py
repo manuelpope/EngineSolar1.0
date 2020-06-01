@@ -1,7 +1,6 @@
 class Engineer(object):
     pass
 
-
     def calculos(self):
         print(" calulando radios, diametros , oEM")
 

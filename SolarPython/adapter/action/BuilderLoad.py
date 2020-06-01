@@ -3,8 +3,9 @@
 # TODO
 # this class should be Static , it's collaborator, it can not be initialized !
 
-from adapter.model.Load import Load
 from math import ceil
+
+from adapter.model.modelFlask import Load
 
 
 class BuilderLoad(object):
@@ -17,10 +18,9 @@ class BuilderLoad(object):
 
     def buildLoad(self):
         # method to convert json to object Load
-        voltaje, current, self.__hours, pf , type = self.__readerInstrument.getMeasures()
-        self.__load = Load(voltaje, current, pf, type)
-        self.__energyWh = ceil(voltaje * current * self.__hours / pf)
-
+        voltaje, current, self.__hours, pf, type = self.__readerInstrument.getMeasures()
+        self.__energyWh = ceil(float(voltaje) * float(current) * float(self.__hours) / float(pf))
+        self.__load = Load(voltaje, current, self.__hours, pf, type)
 
         return "finished calculation Building"
 

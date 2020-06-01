@@ -4,11 +4,14 @@
 
 import os
 
+from flask import flash
+
 from adapter.action.BuilderLoad import BuilderLoad
 from adapter.action.ReaderInstrument import ReaderInstrument
+from app import db
 
 
-class Technichian(object):
+class Technician(object):
     listDict = []
 
     def work(self):
@@ -21,10 +24,16 @@ class Technichian(object):
         print(builder.__str__())
 
     def reportToEngineDB(self, dictFromUILoad):
-        self.listDict.append(dictFromUILoad)
-        print(self.listDict)
+        readerx = ReaderInstrument(dictFromUILoad)
+        builder = BuilderLoad(readerx)
+        builder.buildLoad()
+        self.listDict.append(builder.loadGetter())
+        print(builder.__str__())
 
     def saveAllListLoads(self):
         print("savind list")
         for elem in self.listDict:
-            print(elem)
+            print(str(elem))
+            db.session.add(elem)
+            db.session.commit()
+        flash("Employee Inserted Successfully")

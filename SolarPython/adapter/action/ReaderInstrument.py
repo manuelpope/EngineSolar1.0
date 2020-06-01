@@ -4,17 +4,16 @@ import json
 
 
 class ReaderInstrument(object):
-    def __init__(self, path=None):
+    def __init__(self, dictionaryFromUI, path=None):
         self.__pathJson = path
-        self.dictLoad = {}
+        self.dictLoad = dictionaryFromUI
 
     def getMeasures(self):
-        self.processJsonReader()
-        return ( self.dictLoad.get("Load").get("voltage"),
-                 self.dictLoad.get("Load").get("current"),
-                 self.dictLoad.get("Load").get("workingHours"),
-                 self.dictLoad.get("Load").get("powerFactor"),
-                 self.dictLoad.get("Load").get("type"))
+        return (self.dictLoad.get("voltage"),
+                self.dictLoad.get("current"),
+                self.dictLoad.get("hours"),
+                self.dictLoad.get("pf"),
+                self.dictLoad.get("typeLoad"))
 
     def processJsonReader(self):
         with open(self.__pathJson, 'r') as f:

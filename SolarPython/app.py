@@ -1,5 +1,6 @@
 import json
 import os
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
@@ -23,8 +24,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 # settings
 # load = modelFlask.Load()
-#roots = Routing()
-#roots.returnURL()
+# roots = Routing()
+# roots.returnURL()
 from controller.Controller import *
+
 if __name__ == '__main__':
     app.run(port='8000', debug=True)

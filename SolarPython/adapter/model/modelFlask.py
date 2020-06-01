@@ -11,10 +11,12 @@ class Load(db.Model, object):
     workingHours = db.Column(db.String(100))
     typeL = db.Column(db.String(100))
 
-    def __init__(self, vx=0, current=0, hours=0):
+    def __init__(self, vx=0, current=0, hours=0, pf=1.0, typeL='AC'):
         self.vx = vx
         self.current = current
         self.workingHours = hours
+        self.pf = pf
+        self.typeL = typeL
 
     @property
     def vx(self):
@@ -28,4 +30,4 @@ class Load(db.Model, object):
             self.__voltage = float(vx)
 
     def __str__(self):
-        return str([self.vx, self.current, self.pf, self.typeL,self.workingHours])
+        return str([self.vx, self.current, self.pf, self.typeL, self.workingHours])
