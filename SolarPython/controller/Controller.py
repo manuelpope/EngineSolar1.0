@@ -1,3 +1,4 @@
+import flask
 from flask import flash, request, redirect, url_for
 
 from adapter.model.modelFlask import Load
@@ -32,7 +33,7 @@ def index():
     all_data = Load.query.all()
 
     r2json = serialize(all_data)
-    return (r2json)
+    return (flask.render_template('form.html'), r2json)
 
 
 @app.route('/update/<id>', methods=['POST'])
