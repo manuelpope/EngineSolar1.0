@@ -23,7 +23,7 @@ class Technician(object):
         print(builder.buildLoad())
         print(builder.__str__())
 
-    def reportToEngineDB(self, dictFromUILoad):
+    def reportToEngineerDB(self, dictFromUILoad):
         readerx = ReaderInstrument(dictFromUILoad)
         builder = BuilderLoad(readerx)
         builder.buildLoad()

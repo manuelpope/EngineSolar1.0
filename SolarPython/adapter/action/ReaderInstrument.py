@@ -13,7 +13,8 @@ class ReaderInstrument(object):
                 self.dictLoad.get("current"),
                 self.dictLoad.get("hours"),
                 self.dictLoad.get("pf"),
-                self.dictLoad.get("typeLoad"))
+                self.dictLoad.get("typeLoad"),
+                self.dictLoad.get("nameDesign"))
 
     def processJsonReader(self):
         with open(self.__pathJson, 'r') as f:

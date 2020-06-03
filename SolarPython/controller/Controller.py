@@ -1,6 +1,7 @@
 import flask
 from flask import flash, request, redirect, url_for
 
+import engineer.worker.Engineer
 from adapter.worker.technician import Technician
 from app import app
 
@@ -62,18 +63,22 @@ def add_contact():
 
 @app.route('/sign-up', methods=['POST'])
 def loadReceive():
+
     dict = request.form
     for k, v in dict.items():
         print(k, " : ", v)
     tech = Technician()
-    tech.reportToEngineDB(dict)
+    tech.reportToEngineerDB(dict)
     flash('Load Added successfully')
+
     return redirect(('/'))
 
 
 @app.route('/loadList', methods=['POST'])
 def loadList():
+    eng = engineer.worker.Engineer.Engineer()
     tech = Technician()
     tech.saveAllListLoads()
     flash('Load Added successfully')
+    eng.getListofLoad()
     return redirect(('/'))
