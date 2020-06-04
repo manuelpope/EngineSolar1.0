@@ -3,7 +3,7 @@ from flask import flash, request, redirect, url_for
 
 import engineer.worker.Engineer
 from adapter.worker.technician import Technician
-from app import app
+from app import app, db
 
 
 def serialize(group):
@@ -82,14 +82,15 @@ def loadList():
     tech = Technician()
     tech.saveAllListLoads()
     flash('Load Added successfully')
+    sizing()
+    return redirect('/')
 
-    return redirect(('/sizing'))
 
-@app.route('/sizing',methods=['GET'])
+
 def sizing():
     global  nameToProcess
     print(nameToProcess)
     eng = engineer.worker.Engineer.Engineer()
     print('procesing batch name: '+nameToProcess)
     eng.getListofLoad(nameToProcess)
-    return ('calculating')
+

@@ -20,8 +20,17 @@ app.secret_key = "mysecretkey"
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://testsolar:test123@localhost/Data_Test_Solar'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_ECHO'] = True
+app.config['SQLALCHEMY_ECHO'] = True
+app.config['expire_on_commit'] = False
+
+
+
 # Mysql Connection
+
 db = SQLAlchemy(app)
+
+
 # settings
 # load = modelFlask.Load()
 # roots = Routing()

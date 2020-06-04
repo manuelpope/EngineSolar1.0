@@ -10,7 +10,7 @@ class Engineer(object):
     dataToProcess=[]
     nameDesign=""
     def __init__(self):
-        self.load =  DaoLoad()
+        self.load = DaoLoad()
 
     def calculos(self):
         print(" calulando radios, diametros , oEM")
@@ -37,7 +37,7 @@ class Engineer(object):
 
     def energyCal(self,load):
         calc = load
-        return round(((float(calc.workingHoursNight)+float(calc.workingHoursDay))*float(calc.current)*float(calc.vx)/float(calc.pf)),3)
+        return round(load.quantity*((float(calc.workingHoursNight)+float(calc.workingHoursDay))*float(calc.current)*float(calc.vx)/float(calc.pf)),3)
 
 
     def calcDemandEnergy(self):

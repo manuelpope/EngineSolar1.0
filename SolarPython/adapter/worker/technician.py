@@ -6,6 +6,7 @@ import os
 
 from flask import flash
 
+import adapter.model.modelFlask
 from adapter.action.BuilderLoad import BuilderLoad
 from adapter.action.ReaderInstrument import ReaderInstrument
 from app import db
@@ -13,7 +14,6 @@ from app import db
 
 class Technician(object):
     listDict = []
-
     def work(self):
         dir = os.path.dirname(__file__)
         dir = dir.replace("/adapter/worker", "")
@@ -34,6 +34,9 @@ class Technician(object):
         print("savind list")
         for elem in self.listDict:
             print(str(elem))
+
         db.session.add_all(self.listDict)
         db.session.commit()
+        db.session.expunge_all()
+        db.session.close()
         flash("Employee Inserted Successfully")

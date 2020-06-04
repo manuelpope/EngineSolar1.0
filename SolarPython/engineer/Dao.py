@@ -1,16 +1,19 @@
-from adapter.model.modelFlask import Load
 import app
+from adapter.model.modelFlask import Load
 
 
 class DaoLoad(object):
     pass
 
-    def getAllLoads(self):
+    @staticmethod
+    def getAllLoads():
 
         return Load.query.all()
 
-    def getLoadById(self,id):
+    @staticmethod
+    def getLoadById(id):
         return Load.query.get(id)
 
-    def getBatchLoadsByBatchId(self, bathId):
+    @staticmethod
+    def getBatchLoadsByBatchId( bathId):
         return Load.query.filter_by(batchId=(str(bathId))).all()
