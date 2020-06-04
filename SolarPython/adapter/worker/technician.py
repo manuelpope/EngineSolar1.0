@@ -34,6 +34,6 @@ class Technician(object):
         print("savind list")
         for elem in self.listDict:
             print(str(elem))
-            db.session.add(elem)
-            db.session.commit()
+        db.session.add_all(self.listDict)
+        db.session.commit()
         flash("Employee Inserted Successfully")

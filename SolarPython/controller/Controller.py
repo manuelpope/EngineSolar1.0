@@ -15,8 +15,7 @@ def serialize(group):
         print(x, reg)
     # print(rjson, len(group))
     return rjson
-
-
+nameToProcess=''
 @app.route('/')
 def index():
     #   load = Load()
@@ -65,20 +64,32 @@ def add_contact():
 def loadReceive():
 
     dict = request.form
+    print("data from UI")
     for k, v in dict.items():
         print(k, " : ", v)
+    global nameToProcess
+    nameToProcess = dict['nameDesign']
     tech = Technician()
     tech.reportToEngineerDB(dict)
     flash('Load Added successfully')
 
-    return redirect(('/'))
+    return redirect(('/'),)
 
 
 @app.route('/loadList', methods=['POST'])
 def loadList():
-    eng = engineer.worker.Engineer.Engineer()
+
     tech = Technician()
     tech.saveAllListLoads()
     flash('Load Added successfully')
-    eng.getListofLoad()
-    return redirect(('/'))
+
+    return redirect(('/sizing'))
+
+@app.route('/sizing',methods=['GET'])
+def sizing():
+    global  nameToProcess
+    print(nameToProcess)
+    eng = engineer.worker.Engineer.Engineer()
+    print('procesing batch name: '+nameToProcess)
+    eng.getListofLoad(nameToProcess)
+    return ('calculating')

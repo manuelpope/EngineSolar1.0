@@ -12,5 +12,5 @@ class DaoLoad(object):
     def getLoadById(self,id):
         return Load.query.get(id)
 
-    def getBatchLoadsById(self,bathId):
-        return Load.query.filter_by(batchId= bathId).first()
+    def getBatchLoadsByBatchId(self, bathId):
+        return Load.query.filter_by(batchId=(str(bathId))).all()

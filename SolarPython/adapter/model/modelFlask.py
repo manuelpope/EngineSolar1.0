@@ -11,17 +11,21 @@ class Load(db.Model, object):
     current = db.Column(db.String(100))
     pf = db.Column(db.String(100))
     batchId=db.Column(db.String(100))
-    workingHours = db.Column(db.String(100))
+    workingHoursDay = db.Column(db.String(100))
+    workingHoursNight = db.Column(db.String(100))
     typeL = db.Column(db.String(100))
+    quantity = db.Column(db.Integer)
 
 
-    def __init__(self,nameDesign=None ,vx=0, current=0, hours=0, pf=1.0, typeL='AC'):
+    def __init__(self,nameDesign=None ,vx=0, current=0, hoursNight=0,hoursDay=0, pf=1.0, typeL='AC',quantity=1):
         self.vx = vx
         self.current = current
-        self.workingHours = hours
+        self.workingHoursDay = hoursDay
+        self.workingHoursNight = hoursNight
         self.pf = pf
         self.typeL = typeL
         self.batchId = str(datetime.now().strftime("%d-%b-%Y"))+str(nameDesign)
+        self.quantity=quantity
 
 
     @property
@@ -36,4 +40,4 @@ class Load(db.Model, object):
             self.__voltage = float(vx)
 
     def __str__(self):
-        return str([self.vx, self.current, self.pf, self.typeL, self.workingHours])
+        return str([self.vx, self.current, self.pf, self.typeL])

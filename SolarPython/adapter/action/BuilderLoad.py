@@ -18,9 +18,8 @@ class BuilderLoad(object):
 
     def buildLoad(self):
         # method to convert json to object Load
-        voltaje, current, self.__hours, pf, type ,nameDesign = self.__readerInstrument.getMeasures()
-        self.__energyWh = ceil(float(voltaje) * float(current) * float(self.__hours) / float(pf))
-        self.__load = Load(nameDesign,voltaje, current, self.__hours, pf, type)
+        voltaje, current, self.__hours,hoursDay, pf, type ,nameDesign ,quantity = self.__readerInstrument.getMeasures()
+        self.__load = Load(nameDesign,voltaje, current, self.__hours,hoursDay, pf, type,quantity)
 
         return "finished calculation Building"
 
