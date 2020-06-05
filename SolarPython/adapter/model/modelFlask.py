@@ -41,3 +41,18 @@ class Load(db.Model, object):
 
     def __str__(self):
         return str([self.vx, self.current, self.pf, self.typeL])
+
+    def saveLoad(self):
+        db.session.add(self)
+        db.session.commit()
+    @classmethod
+    def getAllLoads(cls):
+
+        return cls.query.all()
+    @classmethod
+    def getLoadById(cls,id):
+        return cls.query.get(id)
+
+    @classmethod
+    def getBatchLoadsByBatchId(cls,bathId):
+        return cls.query.filter_by(batchId=(str(bathId))).all()

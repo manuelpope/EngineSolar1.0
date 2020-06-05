@@ -83,7 +83,7 @@ def loadList():
     tech.saveAllListLoads()
     flash('Load Added successfully')
     sizing()
-    return redirect('/')
+    return redirect(url_for("index"))
 
 
 

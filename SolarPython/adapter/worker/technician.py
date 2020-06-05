@@ -6,7 +6,7 @@ import os
 
 from flask import flash
 
-import adapter.model.modelFlask
+from adapter.model.modelFlask import Load
 from adapter.action.BuilderLoad import BuilderLoad
 from adapter.action.ReaderInstrument import ReaderInstrument
 from app import db
@@ -33,10 +33,5 @@ class Technician(object):
     def saveAllListLoads(self):
         print("savind list")
         for elem in self.listDict:
-            print(str(elem))
+            print(elem.saveLoad())
 
-        db.session.add_all(self.listDict)
-        db.session.commit()
-        db.session.expunge_all()
-        db.session.close()
-        flash("Employee Inserted Successfully")
