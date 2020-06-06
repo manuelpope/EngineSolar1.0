@@ -95,5 +95,6 @@ def sizing():
     eng.getListofLoad(nameToProcess)
     eng.calcDemandEnergy()
     eng.buildDataFrame()
+    eng.calcSolarDesign()
 
 
