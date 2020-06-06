@@ -40,7 +40,12 @@ class Load(db.Model, object):
             self.__voltage = float(vx)
 
     def __str__(self):
-        return str([self.vx, self.current, self.pf, self.typeL])
+        return str([self.id,self.vx, self.current, self.pf, self.typeL,
+                    self.quantity,self.workingHoursDay,self.workingHoursNight])
+
+    def listValues(self):
+        return [self.id, self.vx, self.current, self.pf, self.typeL,
+                    self.quantity, self.workingHoursDay, self.workingHoursNight]
 
     def saveLoad(self):
         db.session.add(self)
@@ -56,3 +61,4 @@ class Load(db.Model, object):
     @classmethod
     def getBatchLoadsByBatchId(cls,bathId):
         return cls.query.filter_by(batchId=(str(bathId))).all()
+

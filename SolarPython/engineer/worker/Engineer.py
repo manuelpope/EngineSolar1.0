@@ -1,6 +1,7 @@
 import datetime
 from engineer.Dao import DaoLoad
 import numpy as np
+import pandas as pd
 
 
 
@@ -9,6 +10,8 @@ import numpy as np
 class Engineer(object):
     dataToProcess=[]
     nameDesign=""
+    bigDict={}
+    df = pd.DataFrame()
     def __init__(self):
         self.load = DaoLoad()
 
@@ -37,10 +40,22 @@ class Engineer(object):
 
     def energyCal(self,load):
         calc = load
-        return round(load.quantity*((float(calc.workingHoursNight)+float(calc.workingHoursDay))*float(calc.current)*float(calc.vx)/float(calc.pf)),3)
-
+        #print(load.__dict__)
+        return round(calc.quantity*((float(calc.workingHoursNight)+float(calc.workingHoursDay))*float(calc.current)*float(calc.vx)/float(calc.pf)),3)
 
     def calcDemandEnergy(self):
         energyPerDevice= [self.energyCal(elem) for elem in self.dataToProcess]
         #print('printing list of energy',energyPerDevice)
         return energyPerDevice
+
+    def buildDataFrame(self):
+        listBig= []
+        for i in self.dataToProcess:
+            listBig.append(i.listValues())
+            print(str(i))
+        arrayTodf =np.array(listBig)
+        arrayTodf.reshape(len(self.dataToProcess),8,-1)
+        df = pd.DataFrame(arrayTodf,columns=['id','voltage','current','pf','type','quantity','Hday','Hnight'])
+        print(df.head())
+
+

@@ -93,4 +93,7 @@ def sizing():
     eng = engineer.worker.Engineer.Engineer()
     print('procesing batch name: '+nameToProcess)
     eng.getListofLoad(nameToProcess)
+    eng.calcDemandEnergy()
+    eng.buildDataFrame()
+
 
