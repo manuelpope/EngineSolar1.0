@@ -17,13 +17,13 @@ class Load(db.Model, object):
     quantity = db.Column(db.Integer)
 
 
-    def __init__(self,nameDesign=None ,vx=0, current=0, hoursNight=0,hoursDay=0, pf=1.0, typeL='AC',quantity=1):
+    def __init__(self,nameDesign=None ,vx=0, current=0, hoursNight=0,hoursDay=0, px=1.0, typeL='AC',quantity=1):
         self.vx = vx
         self.current = current
         self.workingHoursDay = hoursDay
         self.workingHoursNight = hoursNight
-        self.pf = pf
         self.typeL = typeL
+        self.px = px
         self.batchId = str(datetime.now().strftime("%d-%b-%Y"))+str(nameDesign)
         self.quantity=quantity
 
@@ -38,6 +38,17 @@ class Load(db.Model, object):
             self.__voltage = 100
         else:
             self.__voltage = float(vx)
+
+    @property
+    def px(self):
+        return self.pf
+
+    @px.setter
+    def px(self, px):
+        if self.typeL == 'DC':
+            self.pf = 0.9
+        else:
+            self.pf = px
 
     def __str__(self):
         return str([self.id,self.vx, self.current, self.pf, self.typeL,

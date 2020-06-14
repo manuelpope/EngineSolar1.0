@@ -33,10 +33,6 @@ class Engineer(object):
         for elem in self.dataToProcess:
             print(elem)
 
-        print('calculing energy')
-        lisEnergy = self.calcDemandEnergy()
-        totalEnergy = round(np.sum(lisEnergy), 3)
-        print(totalEnergy)
 
     def energyCal(self, load):
         calc = load
@@ -110,12 +106,15 @@ class Engineer(object):
         return bateriasTotal
 
     def solarPanelsCalculation(self, inversor, panel, regulador, totalEnergyDia, totalEnergyNoche):
-        powerOfArrPanels = np.round((totalEnergyDia+totalEnergyNoche) / \
+        print(inversor.eff, regulador.eff ,panel.power, totalEnergyNoche,totalEnergyDia)
+        powerOfArrPanels = np.round(((totalEnergyDia+totalEnergyNoche) / \
                                     (engineer.servicios.ProviderEquipment.getAreaFactor() * \
-                                     (regulador.eff * inversor.eff)))
+                                     (regulador.eff * inversor.eff))),2)
+
         quantityPanels = np.ceil(powerOfArrPanels / panel.power)
         return quantityPanels
 
     def potenciaAC (self):
         aux = self.frame.query('type == "AC"')
         return np.round(np.sum(aux['voltage']* aux['quantity']*aux['current']/aux['pf']))
+
