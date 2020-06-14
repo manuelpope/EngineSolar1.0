@@ -7,7 +7,7 @@ from engineer.model.Regulator import Regulator
 
 def getBattery():
     battery = Battery()
-    battery.voltage = 24
+    battery.voltage = 12
     battery.corriente = 100
     battery.dod = 0.30
     return battery

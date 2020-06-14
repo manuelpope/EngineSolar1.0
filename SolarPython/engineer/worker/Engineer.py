@@ -83,33 +83,39 @@ class Engineer(object):
         print("Total energia Day : ")
         print(totalEnergyDia + totalEnergyNoche)
 
-        autonomia = np.round(totalEnergyNoche / totalEnergyDia)
+        autonomia = np.round((totalEnergyNoche / totalEnergyDia),1)
         regulador = engineer.servicios.ProviderEquipment.getRegulator()
         inversor = engineer.servicios.ProviderEquipment.getInverter()
         panel = engineer.servicios.ProviderEquipment.getPanel()
         battery = engineer.servicios.ProviderEquipment.getBattery()
-        powerOfArrPanels = np.round(totalEnergyDia / \
-                                    (engineer.servicios.ProviderEquipment.getAreaFactor() * \
-                                   (regulador.eff * inversor.eff)))
-        quantityPanels = np.round(powerOfArrPanels / panel.power)
-        minCurrentCapacity = np.round(totalEnergyNoche/panel.voltage/regulador.eff/inversor.eff)
-        numBaterriesSeries = np.round(panel.voltage/battery.voltage)
-        corrientMonoblockParalell = np.round((minCurrentCapacity/battery.dod))
-        rowBatteries = np.round(corrientMonoblockParalell/battery.corriente)
-        bateriasTotal = numBaterriesSeries * rowBatteries
-        regulador.corrienteIn = round(panel.power* quantityPanels/panel.voltage)
+        quantityPanels = self.solarPanelsCalculation(inversor, panel, regulador, totalEnergyDia, totalEnergyNoche)
+        bateriasTotal = self.batteriesCalculation(battery, inversor, panel, regulador, totalEnergyNoche)
+        regulador.corrienteIn = round((panel.power* quantityPanels/panel.voltage),1)
         potenciaInversorMin = self.potenciaAC()
         regulador.corrienteOut =  potenciaInversorMin/inversor.eff/regulador.voltage
         minPotenciaSeleccionInversor = np.round(potenciaInversorMin*1.5)
         inversor.volIn= regulador.voltage
         print('full design')
-        print(minPotenciaSeleccionInversor, bateriasTotal,quantityPanels,regulador.corrienteIn,autonomia)
+        print("Potencia minima inversor ",minPotenciaSeleccionInversor,
+              "numero de baterias ",bateriasTotal,"cantidad paneles ",
+              quantityPanels,"Iin Reg ",regulador.corrienteIn,
+              "autonomia ",autonomia)
 
+    def batteriesCalculation(self, battery, inversor, panel, regulador, totalEnergyNoche):
+        minCurrentCapacity = np.round(totalEnergyNoche / (panel.voltage * regulador.eff * inversor.eff))
+        numBaterriesSeries = np.round(panel.voltage / battery.voltage)
+        corrientMonoblockParalell = np.round((minCurrentCapacity / battery.dod))
+        columnBatteries = np.round(corrientMonoblockParalell / battery.corriente)
+        bateriasTotal = numBaterriesSeries * columnBatteries
+        return bateriasTotal
 
-
-
-
+    def solarPanelsCalculation(self, inversor, panel, regulador, totalEnergyDia, totalEnergyNoche):
+        powerOfArrPanels = np.round((totalEnergyDia+totalEnergyNoche) / \
+                                    (engineer.servicios.ProviderEquipment.getAreaFactor() * \
+                                     (regulador.eff * inversor.eff)))
+        quantityPanels = np.ceil(powerOfArrPanels / panel.power)
+        return quantityPanels
 
     def potenciaAC (self):
         aux = self.frame.query('type == "AC"')
-        return np.round(np.sum(aux['voltage']* aux['current']/aux['pf']))
+        return np.round(np.sum(aux['voltage']* aux['quantity']*aux['current']/aux['pf']))
