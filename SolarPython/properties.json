@@ -1,9 +1,8 @@
 {
-  "prop":
-  {
- "MYSQL_HOST" : "localhost",
-"MYSQL_USER" :"root",
-"MYSQL_PASSWORD": "Adali1392",
-"MYSQL_DB" : "invernadero001"
+  "prop": {
+    "MYSQL_HOST": "localhost",
+    "MYSQL_USER": "root",
+    "MYSQL_PASSWORD": "Adali1392",
+    "MYSQL_DB": "invernadero001"
   }
 }

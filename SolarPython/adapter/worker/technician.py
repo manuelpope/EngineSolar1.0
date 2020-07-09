@@ -4,13 +4,16 @@
 
 import os
 
+from flask import flash
+
+from adapter.model.modelFlask import Load
 from adapter.action.BuilderLoad import BuilderLoad
 from adapter.action.ReaderInstrument import ReaderInstrument
+from app import db
 
 
-class Technichian(object):
+class Technician(object):
     listDict = []
-
     def work(self):
         dir = os.path.dirname(__file__)
         dir = dir.replace("/adapter/worker", "")
@@ -20,11 +23,15 @@ class Technichian(object):
         print(builder.buildLoad())
         print(builder.__str__())
 
-    def reportToEngineDB(self, dictFromUILoad):
-        self.listDict.append(dictFromUILoad)
-        print(self.listDict)
+    def reportToEngineerDB(self, dictFromUILoad):
+        readerx = ReaderInstrument(dictFromUILoad)
+        builder = BuilderLoad(readerx)
+        builder.buildLoad()
+        self.listDict.append(builder.loadGetter())
+        print(builder.__str__())
 
     def saveAllListLoads(self):
         print("savind list")
         for elem in self.listDict:
-            print(elem)
+            print(elem.saveLoad())
+

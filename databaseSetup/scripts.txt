@@ -32,3 +32,20 @@ from app import db
 db.create_all()
 exit()
 --tabla creada.
+
+ cd ~/workspace
+     virtualenv venv
+     . ./venv/bin/activate
+     pip install readline
+     pip install ipython
+     pip install Flask
+     pip install flask_peewee
+     pip install mysql-python
+
+
+1. brew reinstall openssl
+2. export the environment variables
+ export LDFLAGS="-L/usr/local/opt/openssl@1.1/lib"
+ export CPPFLAGS="-I/usr/local/opt/openssl@1.1/include"
+3. pip install mysqlclient
+4. If required, append the environment variables to the bash profile

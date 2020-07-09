@@ -1,8 +1,9 @@
 import flask
 from flask import flash, request, redirect, url_for
 
-from adapter.worker.Technichian import Technichian
-from app import app
+import engineer.worker.Engineer
+from adapter.worker.technician import Technician
+from app import app, db
 
 
 def serialize(group):
@@ -14,8 +15,7 @@ def serialize(group):
         print(x, reg)
     # print(rjson, len(group))
     return rjson
-
-
+nameToProcess=''
 @app.route('/')
 def index():
     #   load = Load()
@@ -62,18 +62,39 @@ def add_contact():
 
 @app.route('/sign-up', methods=['POST'])
 def loadReceive():
+
     dict = request.form
+    print("data from UI")
     for k, v in dict.items():
         print(k, " : ", v)
-    tech = Technichian()
-    tech.reportToEngineDB(dict)
+    global nameToProcess
+    nameToProcess = dict['nameDesign']
+    tech = Technician()
+    tech.reportToEngineerDB(dict)
     flash('Load Added successfully')
-    return redirect(('/'))
+
+    return redirect(('/'),)
 
 
 @app.route('/loadList', methods=['POST'])
 def loadList():
-    tech = Technichian()
+
+    tech = Technician()
     tech.saveAllListLoads()
     flash('Load Added successfully')
-    return redirect(('/'))
+    sizing()
+    return redirect(url_for("index"))
+
+
+
+def sizing():
+    global  nameToProcess
+    print(nameToProcess)
+    eng = engineer.worker.Engineer.Engineer()
+    print('procesing batch name: '+nameToProcess)
+    eng.getListofLoad(nameToProcess)
+    eng.calcDemandEnergy()
+    eng.buildDataFrame()
+    eng.calcSolarDesign()
+
+

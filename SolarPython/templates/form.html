@@ -15,6 +15,12 @@
             <form action="/sign-up" method="POST">
 
                 <div class="form-group">
+                    <label>Name Design</label>
+                    <input type="text" class="form-control" id="nameDesign" name="nameDesign"
+                           placeholder="Select a Name"  required>
+                </div>
+
+                <div class="form-group">
                     <label>VOLTAGE</label>
                     <input type="number" class="form-control" id="VOLTAGE" name="voltage"
                            placeholder="Select a username" step="0.1" required>
@@ -31,14 +37,26 @@
                 </div>
 
                 <div class="form-group">
-                    <label>WORKING HOURS</label>
-                    <input type="number" class="form-control" id="WORKINGHOURS" name="hours"
+                    <label>WORKING HOURS DAY</label>
+                    <input type="number" class="form-control" id="WORKINGHOURSDay" name="hoursDay"
                            placeholder="Enter your email" step="0.5" min="0" required>
                 </div>
+                <div class="form-group">
+                    <label>WORKING HOURS NIGHT </label>
+                    <input type="number" class="form-control" id="WORKINGHOURSNight" name="hoursNight"
+                           placeholder="Enter your email" step="0.5" min="0" required>
+                </div>
+                          <div class="form-group">
+                    <label>Quantity </label>
+                    <input type="number" class="form-control" id="quantity" name="quantity"
+                           placeholder="Enter your email" step="1" min="1" max="40" required>
+                </div>
+
+
 
                 <div class="form-group">
 
-                    <select name="TypeLoad" id="TYPE">
+                    <select name="typeLoad" id="TYPE">
 
                         <option>AC</option>
 
