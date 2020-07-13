@@ -1,41 +1,33 @@
-import json
-import os
-
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from flask_restful import Api
 
+import controller.Resources
+from db import db
 
-def processJsonReader(pathProp=""):
-    dir = os.path.dirname(__file__)
-    filename = os.path.join(dir, pathProp)
-    with open(filename, 'r') as f:
-        dictLoad = json.load(f)
-    return dictLoad
-
-
-dictProp = processJsonReader("properties.json")
 # initializations
-app = Flask(__name__)
-app.secret_key = "mysecretkey"
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://testsolar:test123@localhost/Data_Test_Solar'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_ECHO'] = True
+
+app = Flask(__name__)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://testsolar:test123@localhost/Data_Test_Solar'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+app.config['PROPAGATE_EXCEPTIONS'] = True
 app.config['SQLALCHEMY_ECHO'] = True
 app.config['expire_on_commit'] = False
 
+app.secret_key = 'manu'
+api = Api(app)
 
 
-# Mysql Connection
+@app.before_first_request
+def create_tables():
+    db.create_all()
 
-db = SQLAlchemy(app)
 
-
-# settings
-# load = modelFlask.Load()
-# roots = Routing()
-# roots.returnURL()
-from controller.Controller import *
+api.add_resource(controller.Resources.LoadResource, '/load/<string:designId>')
+api.add_resource(controller.Resources.LoadList, '/loadlist')
 
 if __name__ == '__main__':
-    app.run(port='8000', debug=True)
+    db.init_app(app)
+    app.run(port=5000, debug=True)
