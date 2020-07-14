@@ -1,12 +1,12 @@
 from unittest import TestCase
 
 import engineer.servicios.ProviderEquipment
-import engineer.worker.Engineer
+import engineer.worker.Engineering
 
 
 class TestEngineer(TestCase):
     def test_calcSolarDesign(self):
-        eng = engineer.worker.Engineer.Engineer()
+        eng = engineer.worker.Engineering.Engineer()
         inversor = engineer.servicios.ProviderEquipment.getInverter()
         panel =engineer.servicios.ProviderEquipment.getPanel()
         reg = engineer.servicios.ProviderEquipment.getRegulator()

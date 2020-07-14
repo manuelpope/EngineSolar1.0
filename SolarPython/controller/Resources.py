@@ -1,7 +1,7 @@
-import flask
+from  flask import request
 from flask_restful import Resource, reqparse
-
 import adapter.model.Models
+from engineer.worker.Engineering import Engineer
 
 
 class LoadResource(Resource):
@@ -25,6 +25,26 @@ class LoadResource(Resource):
                         )
     parser.add_argument('quantity',
                         type=int,
+                        required=None,
+                        help="This field cannot be left blank!"
+                        )
+    parser.add_argument('pf',
+                        type=float,
+                        required=None,
+                        help="This field cannot be left blank!"
+                        )
+    parser.add_argument('workingHoursDay',
+                        type=float,
+                        required=None,
+                        help="This field cannot be left blank!"
+                        )
+    parser.add_argument('workingHoursNight',
+                        type=float,
+                        required=None,
+                        help="This field cannot be left blank!"
+                        )
+    parser.add_argument('typeL',
+                        type=str,
                         required=None,
                         help="This field cannot be left blank!"
                         )
@@ -54,12 +74,13 @@ class LoadResource(Resource):
 
 
 class LoadList(Resource):
+
     def get(self):
         return {'items': list(map(lambda x: x.json(), adapter.model.Models.LoadDao.query.all()))}, 200
 
     def post(self):
 
-        listLoads = list(flask.request.get_json()['loadlist'])
+        listLoads = list(request.get_json()['loadlist'])
 
         for item in listLoads:
             elem = adapter.model.Models.LoadDao(**item)
@@ -70,4 +91,20 @@ class LoadList(Resource):
             except:
                 return {"message": "An error occurred inserting the item."}, 500
 
-        return "succesfully saved them", 201
+        return {"message" : "succesfully saved them"}, 201
+
+
+class Engine(Resource):
+
+    def get(self, designId):
+
+        print(designId)
+        eng = Engineer()
+        print('procesing batch name: ' + designId)
+        eng.getListofLoad(designId)
+        eng.calcDemandEnergy()
+        eng.buildDataFrame()
+        eng.calcSolarDesign()
+        return {"message": "Sizing was ok"}, 201
+
+

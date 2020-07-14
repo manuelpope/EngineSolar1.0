@@ -1,11 +1,9 @@
-import datetime
+#import datetime
 
 import numpy as np
 import pandas as pd
-
-import engineer.servicios
 import engineer.servicios.ProviderEquipment
-from engineer.Dao import DaoLoad
+from adapter.model.Models import LoadDao
 
 
 class Engineer(object):
@@ -14,7 +12,7 @@ class Engineer(object):
     bigDict = {}
 
     def __init__(self):
-        self.load = DaoLoad()
+        self.load = LoadDao
 
     def calculos(self):
         print(" calulando radios, diametros , oEM")
@@ -27,11 +25,12 @@ class Engineer(object):
 
     def getListofLoad(self, nameDesign):
 
-        date = str(datetime.datetime.now().strftime("%d-%b-%Y"))
-        self.dataToProcess = (self.load.getBatchLoadsByBatchId(date + str(nameDesign)))
+        #date = str(datetime.datetime.now().strftime("%d-%b-%Y"))
+        #self.dataToProcess = (self.load.getBatchLoadsByBatchId(date + str(nameDesign)))
+        self.dataToProcess = self.load.find_by_designId(nameDesign)
         print("mostrando la busqueda.....", len(self.dataToProcess))
         for elem in self.dataToProcess:
-            print(elem)
+            print(elem.json())
 
 
     def energyCal(self, load):
@@ -39,7 +38,7 @@ class Engineer(object):
         # print(load.__dict__)
         return round(calc.quantity * (
                 (float(calc.workingHoursNight) + float(calc.workingHoursDay)) * float(calc.current) * float(
-            calc.vx) / float(calc.pf)), 3)
+            calc.voltage) / float(calc.pf)), 3)
 
     def calcDemandEnergy(self):
         energyPerDevice = [self.energyCal(elem) for elem in self.dataToProcess]
@@ -47,25 +46,23 @@ class Engineer(object):
         return energyPerDevice
 
     def buildDataFrame(self):
-        listBig = []
-        for i in self.dataToProcess:
-            listBig.append(i.listValues())
-            print(str(i))
-        arrayTodf = np.array(listBig)
-        arrayTodf.reshape(len(self.dataToProcess), 8, -1)
-        self.frame = pd.DataFrame(arrayTodf,
-                                  columns=['id', 'voltage', 'current', 'pf', 'type', 'quantity', 'Hday', 'Hnight'])
+
+        self.dataToProcess = [item.json() for item in self.dataToProcess]
+        self.dataToProcess = [dict(item)for item in self.dataToProcess]
+        print("lista dict :   ",self.dataToProcess)
+        self.frame = pd.DataFrame(self.dataToProcess)
+
         self.frame['voltage'] = self.frame['voltage'].astype('float64')
         self.frame['current'] = self.frame['current'].astype('float64')
         self.frame['pf'] = self.frame['pf'].astype('float64')
-        self.frame['Hnight'] = self.frame['Hnight'].astype('float64')
-        self.frame['Hday'] = self.frame['Hday'].astype('float64')
+        self.frame['workingHoursNight'] = self.frame['workingHoursNight'].astype('float64')
+        self.frame['workingHoursDay'] = self.frame['workingHoursDay'].astype('float64')
         self.frame['quantity'] = self.frame['quantity'].astype('int32')
         print(self.frame.dtypes)
         self.frame['EnergyWhDay'] = (self.frame['voltage'] * self.frame['current'] * self.frame['quantity'] *
-                                     self.frame['Hday']) / self.frame['pf']
+                                     self.frame['workingHoursDay']) / self.frame['pf']
         self.frame['EnergyWhNight'] = (self.frame['voltage'] * self.frame['current'] * self.frame['quantity'] *
-                                       self.frame['Hnight']) / self.frame['pf']
+                                       self.frame['workingHoursNight']) / self.frame['pf']
         print(self.frame.head())
 
     def calcSolarDesign(self):
@@ -115,6 +112,6 @@ class Engineer(object):
         return quantityPanels
 
     def potenciaAC (self):
-        aux = self.frame.query('type == "AC"')
+        aux = self.frame.query('typeL == "AC"')
         return np.round(np.sum(aux['voltage']* aux['quantity']*aux['current']/aux['pf']))
 

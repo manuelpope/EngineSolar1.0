@@ -1,7 +1,8 @@
 from flask import Flask
 from flask_restful import Api
-
-import controller.Resources
+from controller.Resources import LoadResource
+from controller.Resources import LoadList
+from controller.Resources import Engine
 from db import db
 
 # initializations
@@ -25,8 +26,9 @@ def create_tables():
     db.create_all()
 
 
-api.add_resource(controller.Resources.LoadResource, '/load/<string:designId>')
-api.add_resource(controller.Resources.LoadList, '/loadlist')
+api.add_resource(LoadResource, '/load/<string:designId>')
+api.add_resource(LoadList, '/loadlist')
+api.add_resource(Engine, '/engineer/<string:designId>')
 
 if __name__ == '__main__':
     db.init_app(app)

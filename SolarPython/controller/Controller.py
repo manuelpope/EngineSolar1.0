@@ -1,9 +1,9 @@
 import flask
 from flask import flash, request, redirect, url_for
 
-import engineer.worker.Engineer
+import engineer.worker.Engineering
 from adapter.worker.technician import Technician
-from app import app, db
+from app import app
 
 
 def serialize(group):
@@ -90,7 +90,7 @@ def loadList():
 def sizing():
     global  nameToProcess
     print(nameToProcess)
-    eng = engineer.worker.Engineer.Engineer()
+    eng = engineer.worker.Engineering.Engineer()
     print('procesing batch name: '+nameToProcess)
     eng.getListofLoad(nameToProcess)
     eng.calcDemandEnergy()

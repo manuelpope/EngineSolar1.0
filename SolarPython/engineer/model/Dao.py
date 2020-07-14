@@ -1,5 +1,6 @@
 import app
-from adapter.model.modelFlask import Load
+#from adapter.model.modelFlask import Load
+from adapter.model.Models import LoadDao as Load
 
 
 class DaoLoad(object):
@@ -16,4 +17,4 @@ class DaoLoad(object):
 
     @staticmethod
     def getBatchLoadsByBatchId( bathId):
-        return Load.query.filter_by(batchId=(str(bathId))).all()
+        return Load.query.filter_by(desingId=(str(bathId))).all()
