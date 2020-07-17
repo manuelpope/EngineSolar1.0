@@ -70,7 +70,7 @@ class Project(db.Model):
                 'voltage': self.voltage
                 }
     def range(self,voltage):
-        p= lambda voltage : 110 if voltage <= 120 else  220
+        p = lambda voltage: 110 if voltage <= 120 else (220 if voltage < 380 else 380)
         return p(voltage)
     @classmethod
     def find_by_designId(cls, param):
