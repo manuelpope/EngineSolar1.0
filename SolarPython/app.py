@@ -3,6 +3,7 @@ from flask_restful import Api
 from controller.Resources import LoadResource
 from controller.Resources import LoadList
 from controller.Resources import Engine
+from controller.Resources import ProjectResource
 from db import db
 
 # initializations
@@ -29,6 +30,7 @@ def create_tables():
 api.add_resource(LoadResource, '/load/<string:designId>')
 api.add_resource(LoadList, '/loadlist')
 api.add_resource(Engine, '/engineer/<string:designId>')
+api.add_resource(ProjectResource,'/project/')
 
 if __name__ == '__main__':
     db.init_app(app)

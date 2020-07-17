@@ -92,6 +92,25 @@ class LoadList(Resource):
                 return {"message": "An error occurred inserting the item."}, 500
 
         return {"message" : "succesfully saved them"}, 201
+class ProjectResource(Resource):
+
+    def get(self):
+        return {'items': list(map(lambda x: x.json(), adapter.model.Models.Project.query.all()))}, 200
+
+    def post(self):
+
+        name = (request.get_json())
+
+
+        elem = adapter.model.Models.Project(**name)
+        try:
+            elem.save_to_db()
+            print("successfull saved it")
+
+        except:
+            return {"message": "An error occurred inserting the item."}, 500
+
+        return {"message" : "succesfully saved them"}, 201
 
 
 class Engine(Resource):
