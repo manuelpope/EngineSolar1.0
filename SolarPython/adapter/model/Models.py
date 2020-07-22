@@ -8,7 +8,6 @@ class LoadDao(db.Model):
     __tablename__ = 'loadsapi'
 
     id = db.Column(db.Integer, primary_key=True)
-    designId = db.Column(db.String(80))
     voltage = db.Column(db.Float(precision=2))
     current = db.Column(db.Float(precision=2))
     quantity = db.Column(db.Integer)
@@ -17,8 +16,11 @@ class LoadDao(db.Model):
     workingHoursNight = db.Column(db.Float(precision=2))
     typeL = db.Column(db.String(100))
 
-    def __init__(self, designId, voltage, current, quantity, pf, workingHoursDay, workingHoursNight, typeL):
-        self.designId = designId
+    project_Id = db.Column(db.Integer, db.ForeignKey('project.id'))
+    designId = db.relationship('Project')
+
+    def __init__(self, project_Id, voltage, current, quantity, pf, workingHoursDay, workingHoursNight, typeL):
+        self.project_Id = project_Id
         self.voltage = voltage
         self.current = current
         self.quantity = quantity
@@ -28,7 +30,7 @@ class LoadDao(db.Model):
         self.typeL = typeL
 
     def json(self):
-        return {'design': self.designId, 'voltage': self.voltage,
+        return {'design': self.project_Id, 'voltage': self.voltage,
                 'current': self.current,
                 'quantity': self.quantity,
                 'pf': self.pf,
@@ -40,7 +42,7 @@ class LoadDao(db.Model):
     @classmethod
     def find_by_designId(cls, param):
         print("param " + param)
-        result = cls.query.filter_by(designId=param).all()
+        result = cls.query.filter_by(project_Id=param).all()
         return result
 
     def save_to_db(self):
@@ -58,6 +60,7 @@ class Project(db.Model):
     designId = db.Column(db.String(80))
     voltage = db.Column(db.Integer)
     date = db.Column(db.DateTime)
+    items = db.relationship('LoadDao', lazy='dynamic')
 
     def __init__(self, designId, voltage):
         self.designId = designId
@@ -65,9 +68,11 @@ class Project(db.Model):
         self.date = datetime.now().date()
 
     def json(self):
-        return {'designId': self.designId,
+        return {'Id:': self.id,
+                'designId': self.designId,
                 'date': str(self.date),
-                'voltage': self.voltage
+                'voltage': self.voltage,
+                'items': [item.json() for item in self.items.all()]
                 }
     def range(self,voltage):
         p = lambda voltage: 110 if voltage <= 120 else (220 if voltage < 380 else 380)

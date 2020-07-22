@@ -7,8 +7,8 @@ from engineer.worker.Engineering import Engineer
 class LoadResource(Resource):
     parser = reqparse.RequestParser()
 
-    parser.add_argument('designId',
-                        type=str,
+    parser.add_argument('project_Id',
+                        type=int,
                         required=None,
                         help="This field cannot be left blank!"
                         )
